@@ -9,11 +9,15 @@ const FirstTimeRegistrationService = {
     const owner = await SerializeService.serializeOwner(data.owner);
 
     data.dogs.map((dog, index) => {
-      data.secondaryOwner.map((owner, k) => {
-        if (index === k) {
-          dog.secondaryOwner = owner ? owner.secondary : null;
-        }
-      });
+      if (data.secondaryOwner) {
+        data.secondaryOwner.map((owner, k) => {
+          if (index === k) {
+            dog.secondaryOwner = owner ? owner.secondary : null;
+          }
+        });
+      } else {
+        return null;
+      }
     });
     const dogs = await SerializeService.serializeDog(data.dogs);
     // console.log(dogs, "added secondary");
