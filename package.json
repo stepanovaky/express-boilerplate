@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "prettier": {
+    "singleQuote": false
+  },
   "scripts": {
     "test": "mocha --require test/setup.js",
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "predeploy": "npm audit", 
+    "predeploy": "npm audit",
     "deploy": "git push heroku master"
   },
   "keywords": [],
@@ -15,13 +18,24 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
+    "email-templates": "^8.0.3",
     "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "firebase": "^8.2.4",
+    "firebase-admin": "^9.4.2",
+    "graphql": "^15.4.0",
     "helmet": "^4.1.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "nanoid": "^3.1.20",
+    "nodemailer": "^6.4.17",
+    "xss": "^1.0.8"
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "firebase-mock": "^2.3.2",
     "mocha": "^8.1.3",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
