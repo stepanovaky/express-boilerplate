@@ -25,6 +25,8 @@ const FirstTimeRegistrationService = {
     //   data.secondaryOwner
     // );
     database.addOwner(owner, dogs);
+    database.addDog(owner, dogs);
+    database.logEvent(owner, dogs, "registration");
     EmailService.firstRegistration(owner, dogs);
   },
 };
