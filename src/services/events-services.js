@@ -16,16 +16,33 @@ const EventsService = {
     console.log(data);
     console.log(data.eventId);
     const event = await database.getOneEvent(data.eventId);
-    const owners = await database.getDogsOwner(data.addedDogs);
+    const owner = await database.getDogsOwner(data.addedDogs);
     database.logEvent("primary", data.addedDogs, "Sanctioned Registration");
-    database.addSanctionedRegistrationToEvent(event, data.addedDogs);
+    // event = [res.id, res.data().eventName, res.data().startDate];
+    EmailService.sanctionedEventRegistration(
+      event[1],
+      data.addedDogs,
+      event[2],
+      owner
+    );
+    database.addSanctionedRegistrationToEvent(event[0], data.addedDogs);
   },
   async addUnsanctionedRegistration(data) {
     console.log(data);
     console.log(data.eventId);
     const event = await database.getOneEvent(data.eventId);
     database.logEvent(data.owners[0], data.dogs, "Unsanctioned Registration");
-    database.addUnsanctionedRegistrationToEvent(event, data.owners, data.dogs);
+    EmailService.unsanctionedEventRegistration(
+      event[1],
+      data.dogs,
+      event[2],
+      data.owners.email
+    );
+    database.addUnsanctionedRegistrationToEvent(
+      event[0],
+      data.owners,
+      data.dogs
+    );
   },
 };
 

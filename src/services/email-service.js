@@ -16,6 +16,22 @@ const EmailService = {
       })
       .then(console.log);
   },
+  async sanctionedEventRegistration(eventName, dogs, eventDate, owner) {
+    email
+      .send({
+        template: "sanctioned-event-registration",
+        message: {
+          to: owner,
+        },
+        locals: {
+          name: dogs,
+          eventName: eventName,
+          eventDate: eventDate,
+        },
+      })
+      .then(console.log);
+  },
+  async unsanctionedEventRegistration(eventName, dogs, eventDate, owner) {},
 };
 
 module.exports = EmailService;

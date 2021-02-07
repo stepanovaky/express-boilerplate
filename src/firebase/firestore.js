@@ -140,8 +140,9 @@ const database = {
       .get();
     let owner;
     querySnapshot.forEach((doc) => {
-      console.log(doc.id);
+      owner = doc.id;
     });
+    return owner;
   },
   async findOwnerByEmail(email) {
     console.log(email, "email");
@@ -197,7 +198,7 @@ const database = {
     const snapshot = await eventsRef.where("eventId", "==", id).get();
     let event;
     snapshot.forEach((res) => {
-      event = res.id;
+      event = [res.id, res.data().eventName, res.data().startDate];
     });
     return event;
   },
