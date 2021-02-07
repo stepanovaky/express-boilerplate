@@ -11,6 +11,13 @@ const EventsService = {
 
     const res = await database.updateEvents(serializedData);
   },
+  async addSanctionedRegistration(data) {
+    console.log(data);
+    console.log(data.eventId);
+    const event = await database.getOneEvent(data.eventId);
+    database.logEvent("primary", data.addedDogs, "Sanctioned Registration");
+    database.addSanctionedRegistrationToEvent(event, data.addedDogs);
+  },
 };
 
 module.exports = EventsService;

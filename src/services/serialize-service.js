@@ -8,8 +8,10 @@ const SerializeService = {
   async serializeOwner(data) {
     console.log(data, "serialize owner");
     const ownerInfo = {
-      fullName: xss(data.firstName + " " + data.lastName),
-      email: xss(data.email),
+      fullName: xss(
+        data.firstName.toLowerCase() + " " + data.lastName.toLowerCase()
+      ),
+      email: xss(data.email.toLowerCase()),
       mobile: xss(data.mobile),
       landline: xss(data.landline),
       address: xss(data.addressOne + " " + data.addressTwo),
@@ -24,18 +26,17 @@ const SerializeService = {
     const expirationYear = getYear(new Date());
     const expirationDate = new Date(expirationYear, 11, 31);
     const serializedDogs = data.map((dog, index) => {
+      console.log(dog, "serialize dog");
       return {
-        registeredName: xss(dog.registeredName),
-        callName: xss(dog.callName),
-        registrationNumber: xss(dog.ackNumber),
+        registeredName: xss(dog.registeredName.toLowerCase()),
+        callName: xss(dog.callName.toLowerCase()),
+        registrationNumber: xss(dog.registrationNumber),
         microchip: xss(dog.microchip),
-        breed: xss(dog.breed),
+        breed: xss(dog.breed.toLowerCase()),
         dob: xss(dog.dob),
         gender: xss(dog.gender),
         registrationPapers: xss(dog.registrationPapers),
-        registrationPapersUrl: xss(
-          dog.registrationPapersUrl ? dog.registrationPapersUrl : null
-        ),
+        registrationPapersUrl: xss(dog.pdfUrl ? dog.pdfUrl : null),
         exp: expirationDate,
         sanctionId: nanoid(4).toLowerCase(),
         primaryOwners: [],

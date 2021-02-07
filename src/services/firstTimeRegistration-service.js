@@ -4,13 +4,13 @@ const EmailService = require("./email-service");
 
 const FirstTimeRegistrationService = {
   async first(data) {
-    // console.log(data, "first registration");
+    console.log(data, "first registration");
     // console.log(data.owner, "added dogs to owner");
     const owner = await SerializeService.serializeOwner(data.owner);
 
     data.dogs.map((dog, index) => {
-      if (data.secondaryOwner) {
-        data.secondaryOwner.map((owner, k) => {
+      if (data.secondary) {
+        data.secondary.map((owner, k) => {
           if (index === k) {
             dog.secondaryOwner = owner ? owner.secondary : null;
           }

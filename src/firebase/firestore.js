@@ -46,20 +46,68 @@ const database = {
     });
   },
   async findDogById(callName) {
+    const obj = {};
     const doc = await dogRef.doc(callName).get();
     if (doc.exists) {
-      return doc.data();
+      obj.dog = doc.data();
     } else {
       return { message: "No Dog Found" };
     }
+    const snapshot = await dogRef.doc(callName).collection("owners").get();
+    snapshot.forEach((doc) => {
+      obj.owner = doc.data();
+    });
+    return obj;
   },
   async findDog(data) {
-    const doc = await dogRef.where(data.findDogs, "==", data.dogItem);
-    if (doc.exists) {
-      return doc.data();
-    } else {
-      return { message: "No Dog Found" };
-    }
+    console.log(data, "find dog");
+    const snapshot = await dogRef
+      .where(data.findDogs, "==", data.dogItem)
+      .get();
+    const obj = {};
+    snapshot.forEach((doc) => {
+      console.log(doc.data());
+      obj.dog = doc.data();
+
+      const fetchOwner = async (id) => {
+        const obj2 = {};
+        const snapshot = await dogRef.doc(id).collection("owners").get();
+        snapshot.forEach((doc) => {
+          console.log(doc.data(), "fetch owner");
+          obj2.owner = doc.data();
+          return doc.data();
+        });
+        obj.owner = obj2.owner;
+        console.log(obj2, "object 2");
+      };
+      const owner = fetchOwner(doc.id);
+      let p = new Promise((resolve, reject) => {
+        if (owner) {
+          resolve((obj.owner = owner));
+        } else {
+          reject("failed");
+        }
+      });
+
+      p.then((res) => {
+        console.log(res, "promise 2");
+        return res;
+      }).then((res) => {
+        console.log(res, "promise 3");
+      });
+
+      // Promise.all(p);
+      //one day, when I have the courage, I will refactor
+
+      console.log(p, "promise");
+
+      // const owner = fetchOwner(doc.id);
+
+      console.log(owner, "fetchowner owner");
+      // obj.owner = owner;
+    });
+    const wait = await obj.owner;
+    return obj;
   },
   async findOwnerByEmail(email) {
     console.log(email, "email");
@@ -110,6 +158,19 @@ const database = {
     //   unsanctionedPrice: data.unsanctionedPrice,
     //   eventPdfUrl: data.eventPdfUrl,
     // });
+  },
+  async getOneEvent(id) {
+    const snapshot = await eventsRef.where("eventId", "==", id).get();
+    let event;
+    snapshot.forEach((res) => {
+      event = res.id;
+    });
+    return event;
+  },
+  async addSanctionedRegistrationToEvent(id, dogs) {
+    await eventsRef.doc(id).update({
+      sanctionedDogs: [...dogs],
+    });
   },
   async logEvent(owner, dogs, type) {
     const date = new Date().getTime();
