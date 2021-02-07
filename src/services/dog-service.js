@@ -16,6 +16,10 @@ const DogService = {
       return dog;
     }
   },
+  async updateDog(data) {
+    console.log(data);
+    database.updateDog(data);
+  },
 };
 
 module.exports = DogService;

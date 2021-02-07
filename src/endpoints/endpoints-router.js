@@ -31,6 +31,13 @@ registrationRouter
     EventsService.addSanctionedRegistration(req.body);
   });
 
+registrationRouter
+  .route("/api/unsanctioned/event/registration")
+  .post(jsonParser, async (req, res, next) => {
+    console.log(req.body);
+    EventsService.addUnsanctionedRegistration(req.body);
+  });
+
 eventsRouter.route("/api/get/events").get(async (req, res, next) => {
   const events = await EventsService.getAllEvents();
   res.status(200).json({ events });
@@ -63,6 +70,10 @@ dogRouter.route("/api/find/dog").get(async (req, res, next) => {
     console.log(dog, "sanctionid");
     res.status(200).json({ dog });
   }
+});
+
+dogRouter.route("/api/update/dog").put(jsonParser, async (req, res, next) => {
+  DogService.updateDog(req.body);
 });
 
 logRouter.route("/api/get/all/logs").get(async (req, res, next) => {

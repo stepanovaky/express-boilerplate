@@ -1,3 +1,4 @@
+const OwnerService = require("../services/owner-service");
 const db = require("./firebase");
 
 const eventsRef = db.collection("events");
@@ -109,6 +110,39 @@ const database = {
     const wait = await obj.owner;
     return obj;
   },
+  updateDog(data) {
+    console.log(data);
+    const dog = data.data;
+    dogRef.doc(data.data.callName).update({
+      dog,
+    });
+
+    if (data.data.date) {
+      dogRef
+        .doc(data.data.callName)
+        .collection("times")
+        .doc(data.data.date)
+        .set({
+          times: [
+            {
+              date: data.data.date,
+              weight: data.data.weight,
+              time: data.data.time,
+            },
+          ],
+        });
+    }
+  },
+  async getDogsOwner(dogs) {
+    const querySnapshot = await dogRef
+      .doc(dogs[0].callName)
+      .collection("owners")
+      .get();
+    let owner;
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id);
+    });
+  },
   async findOwnerByEmail(email) {
     console.log(email, "email");
     const doc = await primaryRef.doc(email).get();
@@ -168,8 +202,19 @@ const database = {
     return event;
   },
   async addSanctionedRegistrationToEvent(id, dogs) {
-    await eventsRef.doc(id).update({
-      sanctionedDogs: [...dogs],
+    dogs.map((dog) => {
+      eventsRef.doc(id).collection("sanctioned").doc(dog.callName).set({
+        dog,
+      });
+    });
+  },
+  async addUnsanctionedRegistrationToEvent(id, owner, dogs) {
+    dogs.map((dog) => {
+      const callName = [dog, owner[0]];
+      eventsRef.doc(id).collection("unsanctioned").doc(dog.callName).set({
+        dog: dog,
+        owner: owner[0],
+      });
     });
   },
   async logEvent(owner, dogs, type) {

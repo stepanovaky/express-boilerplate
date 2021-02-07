@@ -30,7 +30,7 @@ const SerializeService = {
       return {
         registeredName: xss(dog.registeredName.toLowerCase()),
         callName: xss(dog.callName.toLowerCase()),
-        registrationNumber: xss(dog.registrationNumber),
+        registrationNumber: xss(dog.registrationNumber.toLowerCase()),
         microchip: xss(dog.microchip),
         breed: xss(dog.breed.toLowerCase()),
         dob: xss(dog.dob),

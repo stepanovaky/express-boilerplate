@@ -1,4 +1,5 @@
 const database = require("../firebase/firestore");
+const EmailService = require("./email-service");
 const SerializeEvents = require("./serialize-event");
 
 const EventsService = {
@@ -15,8 +16,16 @@ const EventsService = {
     console.log(data);
     console.log(data.eventId);
     const event = await database.getOneEvent(data.eventId);
+    const owners = await database.getDogsOwner(data.addedDogs);
     database.logEvent("primary", data.addedDogs, "Sanctioned Registration");
     database.addSanctionedRegistrationToEvent(event, data.addedDogs);
+  },
+  async addUnsanctionedRegistration(data) {
+    console.log(data);
+    console.log(data.eventId);
+    const event = await database.getOneEvent(data.eventId);
+    database.logEvent(data.owners[0], data.dogs, "Unsanctioned Registration");
+    database.addUnsanctionedRegistrationToEvent(event, data.owners, data.dogs);
   },
 };
 
