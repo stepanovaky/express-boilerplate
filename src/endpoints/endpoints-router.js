@@ -18,8 +18,8 @@ registrationRouter
   .post(jsonParser, async (req, res, next) => {
     console.log(req.body.data.dogs, "first time registration endpoint");
     // console.log(req.headers);
-    ValidationServices.validate(req.body.data);
-    FirstTimeRegistrationService.first(req.body.data);
+    await ValidationServices.validate(req.body.data);
+    await FirstTimeRegistrationService.first(req.body.data);
 
     res.status(200).json({ message: "success" });
   });
@@ -28,7 +28,7 @@ registrationRouter
   .route("/api/sanctioned/event/registration")
   .post(jsonParser, async (req, res, next) => {
     // console.log(req.body, "sanctioned registration");
-    EventsService.addSanctionedRegistration(req.body);
+    await EventsService.addSanctionedRegistration(req.body);
   });
 
 eventsRouter.route("/api/get/events").get(async (req, res, next) => {

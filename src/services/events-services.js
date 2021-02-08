@@ -15,8 +15,8 @@ const EventsService = {
     console.log(data);
     console.log(data.eventId);
     const event = await database.getOneEvent(data.eventId);
-    database.logEvent("primary", data.addedDogs, "Sanctioned Registration");
-    database.addSanctionedRegistrationToEvent(event, data.addedDogs);
+    await database.logEvent("primary", data.addedDogs, "Sanctioned Registration");
+    await database.addSanctionedRegistrationToEvent(event, data.addedDogs);
   },
 };
 

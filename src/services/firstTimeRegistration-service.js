@@ -24,10 +24,10 @@ const FirstTimeRegistrationService = {
     // const secondaryOwner = await SerializeService.serializeSecondary(
     //   data.secondaryOwner
     // );
-    database.addOwner(owner, dogs);
-    database.addDog(owner, dogs);
-    database.logEvent(owner, dogs, "registration");
-    EmailService.firstRegistration(owner, dogs);
+    await database.addOwner(owner, dogs);
+    await database.addDog(owner, dogs);
+    await database.logEvent(owner, dogs, "registration");
+    await EmailService.firstRegistration(owner, dogs);
   },
 };
 
