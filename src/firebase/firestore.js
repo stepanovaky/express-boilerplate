@@ -49,7 +49,7 @@ const database = {
   },
   async findDogById(callName) {
     const obj = {};
-    const doc = await dogRef.doc(callName).get();
+    const doc = await dogRef.doc(callName.toLowerCase()).get();
     if (doc.exists) {
       obj.dog = doc.data();
     } else {
