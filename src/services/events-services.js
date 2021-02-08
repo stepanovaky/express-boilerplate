@@ -3,6 +3,9 @@ const EmailService = require("./email-service");
 const SerializeEvents = require("./serialize-event");
 
 const EventsService = {
+  async addEvent(data) {
+    await database.addTheEvent(data);
+  },
   async getAllEvents() {
     const eventsList = await database.getEvents();
     return eventsList;

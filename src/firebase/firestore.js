@@ -1,5 +1,6 @@
 const OwnerService = require("../services/owner-service");
 const db = require("./firebase");
+const { nanoid } = require("nanoid");
 
 const eventsRef = db.collection("events");
 const dogRef = db.collection("dogs");
@@ -110,7 +111,7 @@ const database = {
     const wait = await obj.owner;
     return obj;
   },
-  updateDog(data) {
+  async updateDog(data) {
     console.log(data);
     const dog = data.data;
     dogRef.doc(data.data.callName).update({
@@ -144,7 +145,7 @@ const database = {
     });
     return owner;
   },
-  async findOwnerByEmail(email) {
+  async findOwnerByTheEmail(email) {
     console.log(email, "email");
     const doc = await primaryRef.doc(email).get();
     if (doc.exists) {
@@ -152,6 +153,27 @@ const database = {
     } else {
       return { message: "No Owner Found" };
     }
+  },
+  async updateTheOwner(owner) {
+    console.log(owner);
+    await primaryRef.doc(owner.email).update(owner);
+  },
+  async deleteTheOwner(owner) {
+    console.log(owner);
+    await primaryRef.doc(owner.email).delete();
+  },
+  async deleteTheDog(dog) {
+    await dogRef.doc(dog.callName).delete();
+  },
+  async addTheEvent(data) {
+    console.log(data);
+    await eventsRef
+      .doc()
+      .set({
+        eventId: nanoid(),
+        eventName: data.eventName,
+        startDate: data.startDate,
+      });
   },
   async getEvents() {
     const eventList = [];

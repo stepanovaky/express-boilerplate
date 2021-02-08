@@ -50,14 +50,32 @@ eventsRouter
     const updateData = await EventsService.updateEvents(data);
   });
 
+eventsRouter
+  .route("/api/add/event")
+  .post(jsonParser, async (req, res, next) => {
+    await EventsService.addEvent(req.body);
+  });
+
 ownerRouter.route("/api/find/owner").get(async (req, res, next) => {
   const ownerToFind = req.headers["data"];
   const parsedOwner = JSON.parse(ownerToFind);
   if (parsedOwner.findOwner === "email") {
-    const owner = await OwnerService.findOwnerByEmail(parsedOwner.ownerItem);
+    const owner = await DogService.findOwnerByEmail(parsedOwner.ownerItem);
     res.status(201).json({ owner });
   }
 });
+//owner service broke, moved everything into dog service for temp
+ownerRouter
+  .route("/api/update/owner")
+  .put(jsonParser, async (req, res, next) => {
+    await DogService.updateOwner(req.body);
+  });
+
+ownerRouter
+  .route("/api/delete/owner")
+  .put(jsonParser, async (req, res, next) => {
+    await DogService.deleteOwner(req.body);
+  });
 
 dogRouter.route("/api/find/dog").get(async (req, res, next) => {
   const dogToFind = req.headers["data"];
@@ -74,6 +92,10 @@ dogRouter.route("/api/find/dog").get(async (req, res, next) => {
 
 dogRouter.route("/api/update/dog").put(jsonParser, async (req, res, next) => {
   DogService.updateDog(req.body);
+});
+
+dogRouter.route("/api/delete/dog").put(jsonParser, (req, res, enxt) => {
+  DogService.deleteDog(req.body);
 });
 
 logRouter.route("/api/get/all/logs").get(async (req, res, next) => {
