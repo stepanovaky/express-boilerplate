@@ -17,7 +17,7 @@ const EventsService = {
     console.log(data.eventId);
     const event = await database.getOneEvent(data.eventId);
     const owner = await database.getDogsOwner(data.addedDogs);
-    database.logEvent("primary", data.addedDogs, "Sanctioned Registration");
+    database.logEvent(owner, data.addedDogs, "Sanctioned Registration");
     // event = [res.id, res.data().eventName, res.data().startDate];
     EmailService.sanctionedEventRegistration(
       event[1],
@@ -36,7 +36,7 @@ const EventsService = {
       event[1],
       data.dogs,
       event[2],
-      data.owners.email
+      data.owners[0].email
     );
     database.addUnsanctionedRegistrationToEvent(
       event[0],
