@@ -35,6 +35,7 @@ const EventsService = {
     console.log(data.eventId);
     const event = await database.getOneEvent(data.eventId);
     database.logEvent(data.owners[0], data.dogs, "Unsanctioned Registration");
+    
     EmailService.unsanctionedEventRegistration(
       event[1],
       data.dogs,
